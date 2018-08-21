@@ -2,6 +2,7 @@
 // const swaggerDocument = require('./swagger.json');
 const config = require('config');
 const Joi = require('joi');
+const error = require('./middleware/error');
 Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
 const mongoose = require('mongoose');
@@ -31,9 +32,10 @@ app.use('/api/users', users);
 app.use('/api/auth', auth);
 // app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/', (req, res) => {
-    res.send('WOW!!');
-});
+
+
+
+app.use(error);
 
 const port = process.env.PORT || 3000;
 
