@@ -23,9 +23,9 @@ router.post('/', async (req, res) => {
     const genre = await Genre.findById(genreId).select({name:1}); 
     if(!genre) return res.status(400).send('Invalid genre');
 
-    let movie = new Movie({title,genre,numberInStock,dailyRentalRate});  
+    const movie = new Movie({title,genre,numberInStock,dailyRentalRate});  
     
-    movie = await movie.save();
+    await movie.save();
 
     res.send(movie);
 });

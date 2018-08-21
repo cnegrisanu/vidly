@@ -18,8 +18,8 @@ router.post('/', async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     const {name,phone,isGold} = req.body;
-    let customer = new Customer({phone,isGold,name});
-    customer = await customer.save();
+    const customer = new Customer({phone,isGold,name});
+    await customer.save();
 
     res.send(customer);
 });
