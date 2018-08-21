@@ -1,9 +1,16 @@
+const auth = require('../middleware/auth');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const {User,validate} = require('../modules/user');
 const _ = require('lodash');
 
 const router = express.Router();
+
+
+router.get('/me', auth, async (req,res) => {
+    const user = await User.findById(req.user._id).select({password: 0});
+    res.send(user);
+});
 
 router.post('/', async (req, res) => {
     const {error} = validate(req.body);
@@ -20,10 +27,8 @@ router.post('/', async (req, res) => {
 
     await user.save();
     const {_id} = user;
-    res.send({_id,name,email});
-
-    //lodash can be used instead of ES6 deconstruction, but I prefer it.
-    // res.send(_.pick(user,['_id','name','email']));
+    const token = user.generateAuthToken();
+    res.header('x-auth-token', token).send({_id,name,email});
 
 });
 
