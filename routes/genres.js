@@ -6,16 +6,16 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 
-router.get('/', asyncMiddleware(async (req, res) => {
+router.get('/', async (req, res) => {
     res.send(await Genre.find().sort({name: 1}));
-}));
+});
 
-router.get('/:id', asyncMiddleware(async (req, res) => {
+router.get('/:id', async (req, res) => {
     const genre = await Genre.findById(req.params.id);
     if(!genre) return res.status(404).send(`The Genre with ID ${req.params.id} was not found!`);
 
     res.send(genre);
-}));
+});
 
 router.post('/', auth, asyncMiddleware(async (req, res) => {
 
@@ -28,7 +28,7 @@ router.post('/', auth, asyncMiddleware(async (req, res) => {
     res.send(genre);
 }));
 
-router.put('/:id', asyncMiddleware(async (req, res) => {
+router.put('/:id', async (req, res) => {
     const {error} = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -38,14 +38,14 @@ router.put('/:id', asyncMiddleware(async (req, res) => {
     if(!genre) return res.status(404).send(`Genre with Id ${req.params.id} was not found!`);
     
     res.send(genre);
-}));
+});
 
-router.delete('/:id', [auth,admin], asyncMiddleware(async (req, res) => {
+router.delete('/:id', [auth,admin], async (req, res) => {
     const genre = await Genre
     .findByIdAndRemove(req.params.id);
     if(!genre) return res.status(404).send(`Genre with Id ${req.params.id} was not found!`);
 
     res.send(genre);
-}));
+});
 
 module.exports = router;

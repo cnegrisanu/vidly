@@ -2,6 +2,7 @@
 // const swaggerDocument = require('./swagger.json');
 const config = require('config');
 const Joi = require('joi');
+require('express-async-errors');
 const error = require('./middleware/error');
 Joi.objectId = require('joi-objectid')(Joi);
 const express = require('express');
